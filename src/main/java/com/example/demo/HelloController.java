@@ -1,0 +1,20 @@
+package com.example.demo;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+
+@Controller
+public class HelloController {
+
+//    @Autowired
+//    private CustomerContext ctx;
+
+    @RequestMapping(value = "/api")
+    public String hello(@RequestHeader(value="Customer-Context") String customerContext) {
+        System.out.println(customerContext);
+        return "OK";
+    }
+}
