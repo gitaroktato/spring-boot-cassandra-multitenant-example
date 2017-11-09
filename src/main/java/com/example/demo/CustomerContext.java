@@ -1,7 +1,20 @@
 package com.example.demo;
 
-/**
- * Created by Oresztesz_Margaritis on 11/6/2017.
- */
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.stereotype.Component;
+
+@Component
+@Scope(value = "request", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class CustomerContext {
+
+    private String customerContext;
+
+    public void setCustomerContext(String ctx) {
+        this.customerContext = ctx;
+    }
+
+    public String getCustomerContext() {
+        return customerContext;
+    }
 }
