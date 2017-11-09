@@ -14,10 +14,14 @@ public class HelloController {
     @Autowired
     private CustomerContext ctx;
 
+    @Autowired
+    private UserRepository userRepo;
+
     @RequestMapping(value = "/api")
     public ResponseEntity<String> hello(
             @RequestHeader(value="Customer-Context") String customerContext) {
         ctx.setCustomerContext(customerContext);
+        userRepo.findByUsername("Bob");
         return new ResponseEntity<>("", HttpStatus.OK);
     }
 }

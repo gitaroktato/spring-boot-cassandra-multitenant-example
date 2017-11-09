@@ -16,7 +16,7 @@ public class CustomerContextApplyingInterceptor implements MethodInterceptor {
 
     @Override
     public Object invoke(MethodInvocation i) throws Throwable {
-        template.execute("USE KEYSPACE " + ctx.getCustomerContext());
+        template.execute("USE " + ctx.getCustomerContext());
         System.out.println("Customer context is: " + ctx.getCustomerContext());
         return i.proceed();
     }
