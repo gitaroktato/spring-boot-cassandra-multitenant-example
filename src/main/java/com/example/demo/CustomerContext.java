@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 @Component
-@Scope(value = "request", proxyMode= ScopedProxyMode.TARGET_CLASS)
+@Scope(scopeName = "request", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class CustomerContext {
 
     private String customerContext;

@@ -1,9 +1,11 @@
 package com.example.demo;
 
+import com.datastax.driver.core.SimpleStatement;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -12,13 +14,15 @@ public class CustomerContextApplyingInterceptor {
 
     @Autowired
     private CustomerContext ctx;
-    @Autowired
-    private CassandraTemplate template;
 
-    @Before("execution(public * org.springframework.data.repository.Repository+.*(..))")
-    public void setCustomerContext() throws Throwable {
-        template.execute("USE " + ctx.getCustomerContext());
-        System.out.println("Customer context is: " + ctx.getCustomerContext());
+    @Around("execution(public * com.datastax.driver.core.Session+.*(..))")
+    public Object setCustomerContext(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object[] args = joinPoint.getArgs();
+        SimpleStatement statement = (SimpleStatement) args[0];
+        statement.setKeyspace(ctx.getCustomerContext());
+        args[0] = new SimpleStatement(statement.getQueryString()
+                .replaceFirst("user", ctx.getCustomerContext() + ".user"));
+        return joinPoint.proceed(args);
     }
 
 }
