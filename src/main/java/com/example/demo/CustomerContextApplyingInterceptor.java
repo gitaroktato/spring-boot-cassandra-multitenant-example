@@ -1,10 +1,15 @@
 package com.example.demo;
 
 import com.datastax.driver.core.SimpleStatement;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.cassandra.mapping.BasicCassandraMappingContext;
+import org.springframework.data.cassandra.mapping.CassandraPersistentEntity;
+import org.springframework.data.cassandra.mapping.CassandraPersistentProperty;
+import org.springframework.data.util.TypeInformation;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -24,10 +29,10 @@ public class CustomerContextApplyingInterceptor {
         return joinPoint.proceed(args);
     }
 
-    @Around("execution(public * *.getMappingContext(..))")
+    @Around("execution(public * *.getTableName(..))")
     public Object testWeave5(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("-- IT WORKS getMappingContext --");
-        return joinPoint.proceed();
+        System.out.println("-- IT WORKS getTableName --");
+        return joinPoint.proceed(joinPoint.getArgs());
     }
 
 
