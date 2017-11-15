@@ -1,7 +1,6 @@
 package com.example.demo;
 
 import com.datastax.driver.core.SimpleStatement;
-import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -24,5 +23,13 @@ public class CustomerContextApplyingInterceptor {
                 .replaceFirst("user", ctx.getCustomerContext() + ".user"));
         return joinPoint.proceed(args);
     }
+
+    @Around("execution(public * *.getMappingContext(..))")
+    public Object testWeave5(ProceedingJoinPoint joinPoint) throws Throwable {
+        System.out.println("-- IT WORKS getMappingContext --");
+        return joinPoint.proceed();
+    }
+
+
 
 }

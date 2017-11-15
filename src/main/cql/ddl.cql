@@ -11,6 +11,3 @@ create table customer2.user (
   	username text,
   	primary key (username)
 );
-
-insert into customer1.user (username) values ('Bob');
-insert into customer2.user (username) values ('Joe');
