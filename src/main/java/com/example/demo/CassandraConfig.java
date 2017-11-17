@@ -39,7 +39,9 @@ public class CassandraConfig {
                 //Add Aspect class to the factory
                 proxyFactory.addAspect(CustomerContextApplyingInterceptor.class);
                 //Get the proxy object
-                return proxyFactory.getProxy();
+                CassandraPersistentEntity result = (CassandraPersistentEntity)proxyFactory.getProxy();
+                result.getTableName();
+                return result;
             }
         };
         return mappingContext;
