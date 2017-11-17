@@ -20,11 +20,10 @@ public class WeavingTest {
                 = new BasicCassandraPersistentEntity<>(info);
         AspectJProxyFactory proxyFactory = new AspectJProxyFactory(entity);
         //Add Aspect class to the factory
-        proxyFactory.addAspect(CustomerContextApplyingInterceptor.class);
+        proxyFactory.addAspect(new CustomerContextApplyingInterceptor());
         //Get the proxy object
         CassandraPersistentEntity result = proxyFactory.getProxy();
         CqlIdentifier tableName = result.getTableName();
-        // ASSERT
-
+        // TODO assert with aspect
     }
 }

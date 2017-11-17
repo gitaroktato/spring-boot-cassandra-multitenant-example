@@ -1,6 +1,9 @@
 package com.example.demo;
 
 import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
+import org.springframework.aop.framework.AdvisedSupport;
+import org.springframework.aop.framework.AdvisedSupportListener;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.cassandra.config.CassandraClusterFactoryBean;
@@ -29,7 +32,6 @@ public class CassandraConfig {
         BasicCassandraMappingContext mappingContext =  new BasicCassandraMappingContext() {
             @Override
             public CassandraPersistentEntity<?> getPersistentEntity(Class<?> type) {
-                System.out.println("WORKS!!!");
                 CassandraPersistentEntity<?> entity = super.getPersistentEntity(type);
                 if (entity == null) {
                     return entity;
@@ -37,11 +39,20 @@ public class CassandraConfig {
                 //Create the Proxy Factory
                 AspectJProxyFactory proxyFactory = new AspectJProxyFactory(entity);
                 //Add Aspect class to the factory
+                proxyFactory.addListener(new AdvisedSupportListener() {
+                    @Override
+                    public void activated(AdvisedSupport advised) {
+                        // TODO
+                    }
+
+                    @Override
+                    public void adviceChanged(AdvisedSupport advised) {
+                        // TODO
+                    }
+                });
                 proxyFactory.addAspect(CustomerContextApplyingInterceptor.class);
                 //Get the proxy object
-                CassandraPersistentEntity result = (CassandraPersistentEntity)proxyFactory.getProxy();
-                result.getTableName();
-                return result;
+                return proxyFactory.getProxy();
             }
         };
         return mappingContext;
@@ -54,13 +65,11 @@ public class CassandraConfig {
 
     @Bean
     public CassandraSessionFactoryBean session() throws Exception {
-
         CassandraSessionFactoryBean session = new CassandraSessionFactoryBean();
         session.setCluster(cluster().getObject());
         session.setKeyspaceName("sample");
         session.setConverter(converter());
         session.setSchemaAction(SchemaAction.NONE);
-
         return session;
     }
 

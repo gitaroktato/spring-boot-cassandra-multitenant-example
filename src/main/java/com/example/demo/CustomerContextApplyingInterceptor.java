@@ -1,36 +1,29 @@
 package com.example.demo;
 
-import com.datastax.driver.core.SimpleStatement;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.cassandra.core.cql.CqlIdentifier;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 @Aspect
-@Component
 public class CustomerContextApplyingInterceptor {
-
-    @Autowired
-    private CustomerContext ctx;
-
-    @Around("execution(public * com.datastax.driver.core.Session+.*(..))")
-    public Object setCustomerContext(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object[] args = joinPoint.getArgs();
-        SimpleStatement statement = (SimpleStatement) args[0];
-        statement.setKeyspace(ctx.getCustomerContext());
-        args[0] = new SimpleStatement(statement.getQueryString()
-                .replaceFirst("user", ctx.getCustomerContext() + ".user"));
-        return joinPoint.proceed(args);
-    }
 
     @Pointcut("execution(public * org.springframework.data.cassandra.mapping.CassandraPersistentEntity+.getTableName())")
     private void selectGetTableName(){}
 
     @Around("selectGetTableName()")
+    @Autowired
     public Object testWeave5(ProceedingJoinPoint joinPoint) throws Throwable {
-        System.out.println("-- IT WORKS getTableName --");
-        return joinPoint.proceed();
+        WebApplicationContext cc = ContextLoader.getCurrentWebApplicationContext();
+        CustomerContext ctx = cc.getBean(CustomerContext.class);
+        CqlIdentifier result = (CqlIdentifier)joinPoint.proceed();
+        // Adding keyspace as prefix
+        return new CqlIdentifier(ctx.getCustomerContext()
+                + "." + result.getUnquoted(), result.isQuoted());
     }
 }
