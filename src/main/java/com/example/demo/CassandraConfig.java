@@ -1,8 +1,6 @@
 package com.example.demo;
 
-import org.springframework.aop.aspectj.annotation.AspectJProxyFactory;
-import org.springframework.aop.framework.AdvisedSupport;
-import org.springframework.aop.framework.AdvisedSupportListener;
+import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,6 +17,9 @@ import org.springframework.data.cassandra.mapping.CassandraPersistentEntity;
 
 @Configuration
 public class CassandraConfig {
+
+    @Autowired
+    private GetTableNameAdvice advice;
 
     @Bean
     public CassandraClusterFactoryBean cluster() {
@@ -37,22 +38,11 @@ public class CassandraConfig {
                     return entity;
                 }
                 //Create the Proxy Factory
-                AspectJProxyFactory proxyFactory = new AspectJProxyFactory(entity);
+                ProxyFactory proxyFactory = new ProxyFactory(entity);
                 //Add Aspect class to the factory
-                proxyFactory.addListener(new AdvisedSupportListener() {
-                    @Override
-                    public void activated(AdvisedSupport advised) {
-                        // TODO
-                    }
-
-                    @Override
-                    public void adviceChanged(AdvisedSupport advised) {
-                        // TODO
-                    }
-                });
-                proxyFactory.addAspect(CustomerContextApplyingInterceptor.class);
+                proxyFactory.addAdvice(advice);
                 //Get the proxy object
-                return proxyFactory.getProxy();
+                return (CassandraPersistentEntity<?>) proxyFactory.getProxy();
             }
         };
         return mappingContext;
