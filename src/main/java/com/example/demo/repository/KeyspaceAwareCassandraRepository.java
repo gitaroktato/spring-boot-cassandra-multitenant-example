@@ -2,17 +2,16 @@ package com.example.demo.repository;
 
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
-import com.example.demo.CustomerContext;
 import org.springframework.cassandra.core.cql.CqlIdentifier;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.repository.query.CassandraEntityInformation;
+import org.springframework.data.cassandra.repository.support.SimpleCassandraRepository;
 
 import java.io.Serializable;
 import java.util.List;
 
 public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
-
-    private CustomerContext ctx;
+        extends SimpleCassandraRepository<T, ID>  {
 
     private final CassandraEntityInformation<T, ID> metadata;
     private final CassandraOperations operations;
