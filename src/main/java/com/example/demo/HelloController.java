@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import com.example.demo.entity.User;
+import com.example.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +18,7 @@ public class HelloController {
 
     @RequestMapping(value = "/api")
     public ResponseEntity<String> hello(@RequestParam String username) {
-        User user = userRepo.findByUsername(username);
+        User user = userRepo.findOne(username);
         return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
     }
 }
