@@ -6,15 +6,15 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Scope(scopeName = "request", proxyMode= ScopedProxyMode.TARGET_CLASS)
-public class CustomerContext {
+public class TenantId {
 
-    private String customerContext;
+    private String tenantId;
 
-    public void setCustomerContext(String ctx) {
-        this.customerContext = ctx;
+    public void setTenantId(String id) {
+        this.tenantId = id;
     }
 
-    public String getCustomerContext() {
-        return customerContext;
+    public String getTenantId() {
+        return tenantId;
     }
 }

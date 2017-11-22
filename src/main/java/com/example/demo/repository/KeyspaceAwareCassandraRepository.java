@@ -2,7 +2,7 @@ package com.example.demo.repository;
 
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
-import com.example.demo.application.CustomerContext;
+import com.example.demo.application.TenantId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cassandra.core.cql.CqlIdentifier;
 import org.springframework.data.cassandra.core.CassandraOperations;
@@ -14,7 +14,6 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import javax.servlet.ServletContext;
 import java.io.Serializable;
-import java.util.List;
 
 public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
         extends SimpleCassandraRepository<T, ID>  {
@@ -23,7 +22,7 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
     private final CassandraOperations operations;
 
     @Autowired
-    private CustomerContext ctx;
+    private TenantId ctx;
 
     public KeyspaceAwareCassandraRepository(
             CassandraEntityInformation<T, ID> metadata,
@@ -53,7 +52,7 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
                 .getIdProperty().getColumnName();
 
         Select select = QueryBuilder.select().all()
-                .from(ctx.getCustomerContext(),
+                .from(ctx.getTenantId(),
                         metadata.getTableName().toCql())
                 .where(QueryBuilder.eq(primaryKey.toString(), id))
                 .limit(1);

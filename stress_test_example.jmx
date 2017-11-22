@@ -29,7 +29,7 @@
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Customer-Context</stringProp>
+              <stringProp name="Header.name">Tenant-ID</stringProp>
               <stringProp name="Header.value">customer1</stringProp>
             </elementProp>
           </collectionProp>
@@ -133,7 +133,7 @@
         <HeaderManager guiclass="HeaderPanel" testclass="HeaderManager" testname="HTTP Header Manager" enabled="true">
           <collectionProp name="HeaderManager.headers">
             <elementProp name="" elementType="Header">
-              <stringProp name="Header.name">Customer-Context</stringProp>
+              <stringProp name="Header.name">Tenant-ID</stringProp>
               <stringProp name="Header.value">customer2</stringProp>
             </elementProp>
           </collectionProp>
