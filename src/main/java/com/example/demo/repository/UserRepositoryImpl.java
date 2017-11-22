@@ -16,10 +16,11 @@ public class UserRepositoryImpl
     private CassandraOperations operations;
 
     @Override
-    public User findByUsername(String username) {
+    public User findByUsernameAndEmail(String username, String email) {
         Select select = QueryBuilder.select().all()
                 .from(ctx.getCustomerContext(),"user")
                 .where(QueryBuilder.eq("username", username))
+                .and(QueryBuilder.eq("email", email))
                 .limit(1);
 
         return operations.selectOne(select, User.class);

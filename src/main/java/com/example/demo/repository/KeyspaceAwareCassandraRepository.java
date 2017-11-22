@@ -61,18 +61,5 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
         return operations.selectOne(select, metadata.getJavaType());
     }
 
-    @Override
-    public List<T> findAll() {
-        return operations.selectAll(metadata.getJavaType());
-    }
-
-    @Override
-    protected List<T> findAll(Select query) {
-        return super.findAll(query);
-    }
-
-    @Override
-    public Iterable<T> findAll(Iterable<ID> ids) {
-        return super.findAll(ids);
-    }
+    // All other overrides should be similar
 }

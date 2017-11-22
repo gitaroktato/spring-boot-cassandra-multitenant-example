@@ -11,14 +11,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-public class HelloController {
+public class UserController {
 
     @Autowired
     private UserRepository userRepo;
 
-    @RequestMapping(value = "/api")
-    public ResponseEntity<String> hello(@RequestParam String username) {
-        User user = userRepo.findByUsername(username);
+    @RequestMapping(value = "/userByName")
+    public ResponseEntity<String> getUserByUsername(@RequestParam String username) {
+        User user = userRepo.findOne(username);
+        return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/userByNameAndEmail")
+    public ResponseEntity<String> getUserByNameAndEmail(
+            @RequestParam String username, @RequestParam String email) {
+        User user = userRepo.findByUsernameAndEmail(username, email);
         return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
     }
 }
