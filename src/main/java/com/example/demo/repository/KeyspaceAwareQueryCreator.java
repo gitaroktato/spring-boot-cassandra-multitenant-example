@@ -1,7 +1,5 @@
 package com.example.demo.repository;
 
-/**
- * Created by Oresztesz_Margaritis on 11/22/2017.
- */
+// This class is package-private, so we're not able to override operations.
 public class KeyspaceAwareQueryCreator extends CassandraQueryCreator {
 }
