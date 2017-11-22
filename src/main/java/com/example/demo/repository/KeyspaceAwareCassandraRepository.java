@@ -2,7 +2,7 @@ package com.example.demo.repository;
 
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.datastax.driver.core.querybuilder.Select;
-import com.example.demo.CustomerContext;
+import com.example.demo.application.CustomerContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cassandra.core.cql.CqlIdentifier;
 import org.springframework.data.cassandra.core.CassandraOperations;
@@ -33,6 +33,12 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
         this.operations = operations;
     }
 
+    private void injectDependencies() {
+        SpringBeanAutowiringSupport
+                .processInjectionBasedOnServletContext(this,
+                getServletContext());
+    }
+
     private ServletContext getServletContext() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
                 .getRequest().getServletContext();
@@ -40,9 +46,7 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
 
     @Override
     public T findOne(ID id) {
-        System.out.println("ID: == " + id);
-        SpringBeanAutowiringSupport.processInjectionBasedOnServletContext(this,
-                getServletContext());
+        injectDependencies();
         CqlIdentifier primaryKey = operations.getConverter()
                 .getMappingContext()
                 .getPersistentEntity(metadata.getJavaType())
@@ -59,19 +63,16 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
 
     @Override
     public List<T> findAll() {
-        System.out.println("FindAll");
         return operations.selectAll(metadata.getJavaType());
     }
 
     @Override
     protected List<T> findAll(Select query) {
-        System.out.println("FindAll");
         return super.findAll(query);
     }
 
     @Override
     public Iterable<T> findAll(Iterable<ID> ids) {
-        System.out.println("FindAll");
         return super.findAll(ids);
     }
 }

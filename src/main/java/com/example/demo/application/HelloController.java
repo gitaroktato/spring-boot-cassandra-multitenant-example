@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.application;
 
 import com.example.demo.entity.User;
 import com.example.demo.repository.UserRepository;
@@ -18,7 +18,7 @@ public class HelloController {
 
     @RequestMapping(value = "/api")
     public ResponseEntity<String> hello(@RequestParam String username) {
-        User user = userRepo.findOne(username);
+        User user = userRepo.findByUsername(username);
         return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
     }
 }
