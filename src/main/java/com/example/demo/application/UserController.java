@@ -17,14 +17,14 @@ public class UserController {
     @Autowired
     private UserRepository userRepo;
     @Autowired
-    private TenantId ctx;
+    private TenantId tenantId;
 
     @RequestMapping(value = "/userByName")
     public ResponseEntity<String> getUserByUsername(
             @RequestHeader("Tenant-ID") String tenantId,
             @RequestParam String username) {
         // Setting the tenant ID
-        ctx.setTenantId(tenantId);
+        this.tenantId.setTenantId(tenantId);
         // Finding user
         User user = userRepo.findOne(username);
         return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
@@ -35,7 +35,7 @@ public class UserController {
             @RequestHeader("Tenant-ID") String tenantId,
             @RequestParam String username, @RequestParam String email) {
         // Setting the tenant ID
-        ctx.setTenantId(tenantId);
+        this.tenantId.setTenantId(tenantId);
         // Finding user
         User user = userRepo.findByUsernameAndEmail(username, email);
         return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);

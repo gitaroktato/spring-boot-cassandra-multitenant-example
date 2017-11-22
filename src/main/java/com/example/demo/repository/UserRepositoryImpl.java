@@ -11,14 +11,14 @@ public class UserRepositoryImpl
         implements KeyspaceAwareUserRepository {
 
     @Autowired
-    private TenantId ctx;
+    private TenantId tenantId;
     @Autowired
     private CassandraOperations operations;
 
     @Override
     public User findByUsernameAndEmail(String username, String email) {
         Select select = QueryBuilder.select().all()
-                .from(ctx.getTenantId(),"user")
+                .from(tenantId.getTenantId(),"user")
                 .where(QueryBuilder.eq("username", username))
                 .and(QueryBuilder.eq("email", email))
                 .limit(1);

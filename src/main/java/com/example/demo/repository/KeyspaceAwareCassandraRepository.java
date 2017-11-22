@@ -22,7 +22,7 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
     private final CassandraOperations operations;
 
     @Autowired
-    private TenantId ctx;
+    private TenantId tenantId;
 
     public KeyspaceAwareCassandraRepository(
             CassandraEntityInformation<T, ID> metadata,
@@ -52,7 +52,7 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
                 .getIdProperty().getColumnName();
 
         Select select = QueryBuilder.select().all()
-                .from(ctx.getTenantId(),
+                .from(tenantId.getTenantId(),
                         metadata.getTableName().toCql())
                 .where(QueryBuilder.eq(primaryKey.toString(), id))
                 .limit(1);
