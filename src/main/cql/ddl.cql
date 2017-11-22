@@ -3,11 +3,13 @@ create KEYSPACE customer2 WITH replication = {'class': 'SimpleStrategy', 'replic
 
 create table customer1.user (
   	username text,
-  	primary key (username)
+  	email text,
+  	primary key (username, email)
 );
 
 
 create table customer2.user (
   	username text,
-  	primary key (username)
+  	email text,
+  	primary key (username, email)
 );
