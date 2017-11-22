@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.application;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
