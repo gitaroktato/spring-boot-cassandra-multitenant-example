@@ -52,7 +52,7 @@ public class KeyspaceAwareCassandraRepository<T, ID extends Serializable>
                 .getIdProperty().getColumnName();
 
         Select select = QueryBuilder.select().all()
-                .from(tenantId.getTenantId(),
+                .from(tenantId.get(),
                         metadata.getTableName().toCql())
                 .where(QueryBuilder.eq(primaryKey.toString(), id))
                 .limit(1);

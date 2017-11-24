@@ -18,7 +18,7 @@ public class UserRepositoryImpl
     @Override
     public User findByUsernameAndEmail(String username, String email) {
         Select select = QueryBuilder.select().all()
-                .from(tenantId.getTenantId(),"user")
+                .from(tenantId.get(),"user")
                 .where(QueryBuilder.eq("username", username))
                 .and(QueryBuilder.eq("email", email))
                 .limit(1);

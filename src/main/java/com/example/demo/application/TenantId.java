@@ -10,11 +10,11 @@ public class TenantId {
 
     private String tenantId;
 
-    public void setTenantId(String id) {
+    public void set(String id) {
         this.tenantId = id;
     }
 
-    public String getTenantId() {
+    public String get() {
         return tenantId;
     }
 }
