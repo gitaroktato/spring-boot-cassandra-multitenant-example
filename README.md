@@ -1,4 +1,4 @@
-# spring-boot-cassandra-multitenant-example
+# Multitenancy wih spring-boot-cassandra
 Example for switching Cassandra keyspace on a per-request basis.
 
 # Project Structure
